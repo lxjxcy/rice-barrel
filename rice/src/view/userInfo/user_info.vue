@@ -1,13 +1,17 @@
 <template>
   <div>
-	  <div class="img1 note" :style ="note">
+	 <!-- <div class="img1 note" :style ="note">
 		  
-	  </div>
+	  </div> -->
     <group>
       <cell title="账户" value="卢雪姣" is-link></cell>
 	  <cell title="邮箱" value="2791958523@qq.com" is-link></cell>
 	  <cell title="手机号" v-model="tel" is-link @click.native="setTel"></cell>
     </group>
+	
+	<div class="submit-footer">
+		<x-button type="primary"  @click.native="save()">保存</x-button>
+	</div>
 	  <div v-transfer-dom>
 		<confirm v-model="showModel"
 		  show-input
@@ -24,7 +28,7 @@
 </template>
 
 <script>
-import { Group, Cell , Confirm,TransferDom, Toast,Loading  } from 'vux'
+import { Group, Cell , Confirm,TransferDom, Toast,Loading,XButton  } from 'vux'
 
 export default {
 	name:"user_info",
@@ -36,7 +40,8 @@ export default {
     Cell,
 	 Confirm,
 	 Toast ,
-	 Loading 
+	 Loading ,
+	 XButton
   },
   
   data(){
@@ -66,6 +71,16 @@ export default {
 	  onShow5 () {
       this.$refs.confirm5.setInputValue('')
     },
+	save(){
+		console.log("aaa")
+		this.$vux.loading.show({
+		  text: 'Loading'
+		})
+	   setTimeout(() => {
+			this.$vux.loading.hide()
+			 this.$vux.toast.show("设置成功")	
+		  }, 2000)
+	},
 	  onConfirm5 (value) {
 		  if(value==""){
 			  this.$vux.toast.show({
@@ -81,20 +96,8 @@ export default {
 			  })
 			  return
 		  }
-	  // this.$refs.confirm5.setInputValue('')
-	  // this.$vux.toast.hide()
-	  this.$vux.loading.show({
-        text: 'Loading'
-      })
-	   setTimeout(() => {
-        this.$vux.loading.hide()
-		this.showModel=false
-
-		 this.$vux.toast.show("设置成功")
-		 this.tel=value
-		
-      }, 2000)
-	  // this.$vux.toast.show("设置成功")
+		  this.showModel=false
+		  this.tel=value
 	},
    
   }
@@ -104,6 +107,10 @@ export default {
 	.img1{
 		height: 200px;
 		width:100%
+		
+	}
+	.submit-footer{
+		margin-top: 200px;
 		
 	}
 </style>
