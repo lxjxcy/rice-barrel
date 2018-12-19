@@ -1,35 +1,22 @@
 <template>
-  <div>
-	 <!-- <div class="img1 note" :style ="note">
-		  
-	  </div> -->
-    <group>
-      <cell title="账户" value="卢雪姣" is-link></cell>
-	  <cell title="邮箱" value="2791958523@qq.com" is-link></cell>
-	  <cell title="手机号" v-model="tel" is-link @click.native="setTel"></cell>
-    </group>
+  <div v-if="hideDom">
+	
+		 <group>
+      <x-input title="手机号码" type="tel" style="padding:20px 10px" @on-blur="blurtel" v-model="mobile" placeholder="请输入手机号码"></x-input>
+			<x-input title="常用地址" style="padding:20px 10px" v-model="address" placeholder="请输入地址" ></x-input>
+		</group>	
+		
 	
 	<div class="submit-footer">
 		<x-button type="primary"  @click.native="save()">保存</x-button>
 	</div>
-	  <div v-transfer-dom>
-		<confirm v-model="showModel"
-		  show-input
-		  ref="confirm5"
-		  title="设置手机号"
-		  :close-on-confirm="false"
-		  @on-cancel="onCancel"
-		  @on-confirm="onConfirm5"
-		  @on-show="onShow5"
-		  @on-hide="onHide">
-		 </confirm>
-    </div>
+
   </div>
 </template>
-
 <script>
-import { Group, Cell , Confirm,TransferDom, Toast,Loading,XButton  } from 'vux'
-
+import { Group, Cell ,  XInput,Confirm,TransferDom, Toast,Loading,XButton  } from 'vux'
+import wx from 'weixin-js-sdk';
+import getOpenId from "../../mixins/getOpenId.js"
 export default {
 	name:"user_info",
 	  directives: {
@@ -41,65 +28,94 @@ export default {
 	 Confirm,
 	 Toast ,
 	 Loading ,
-	 XButton
+	 XButton,
+	  XInput
   },
   
   data(){
 	  return{
-		  tel:"设置",
-		  showModel:false,
-		  note: {
-		  backgroundImage: "url(" + require("../../assets/userback.jpg") + ") ",
-		  backgroundPosition: "center center",
-		  backgroundRepeat: "no-repeat",
-		  backgroundSize: "cover",
-		  verticalAlign: "middle",
-		  backgroundColor:"#fff"
-		  },
+			hideDom:false,
+		  mobile:"",//电话
+			userId:"",
+			openId:"",
+			address:"",//地址
 	  }
   },
+	mixins:[getOpenId],
+	mounted(){
+	// this.getlist("oBq1y5yaKbhnQ86eIDHFUkOnuf7Q")
+	},
   methods:{
-	 setTel(){
-		  this.showModel=true
-	  },
-	 onHide () {
-      console.log('on hide')
-    },
-	 onCancel () {
-      console.log('on cancel')
-    },
-	  onShow5 () {
-      this.$refs.confirm5.setInputValue('')
-    },
+		getlist(res){
+			var that=this;
+				var urls=that.$api.getUserInfo+"?appCode=gzh_xfmt&appUserId="+res	;
+					that.axios.post(urls).then(res=>{
+						if(res.data.code==0){
+							that.mobile=res.data.data.mobile;
+							that.userId=res.data.data.userId;
+							that.address=res.data.data.address;
+						}else{
+							that.$vux.alert.show({
+									title: '提示',
+									content:  res.data.message,
+								onShow () {
+									
+								},
+								onHide () {
+									wx.closeWindow()
+								}
+							})
+						}
+					})
+		},
+  blurtel(value) {
+      	if(value==""){
+      		this.$vux.toast.text( "手机号不能为空")
+      		return
+      	}
+      		if(!(/^1(3|4|5|7|8)\d{9}$/.test(value))||!/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(value)){
+      			this.$vux.toast.text( "手机号格式不正确")
+      			return
+      	}
+    }, 
 	save(){
-		console.log("aaa")
-		this.$vux.loading.show({
-		  text: 'Loading'
+		var that=this;
+		if(that.mobile==""){
+			that.$vux.toast.text( "手机号不能为空")
+			return
+		}
+			if(!(/^1(3|4|5|7|8)\d{9}$/.test(that.mobile))||!/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(that.mobile)){
+				that.$vux.toast.text( "手机号格式不正确")
+				return
+			}
+		var param={
+			mobile:that.mobile,
+			address:that.address,
+			userId:that.userId,
+			outUserId:that.openId
+		}
+		that.$vux.loading.show({
+			text: 'Loading'
 		})
-	   setTimeout(() => {
-			this.$vux.loading.hide()
-			 this.$vux.toast.show("设置成功")	
-		  }, 2000)
-	},
-	  onConfirm5 (value) {
-		  if(value==""){
-			  this.$vux.toast.show({
-				  text: "手机号不能为空",
-				  type:"warn"
-			  })
-			  return
-		  }
-		  if(!(/^1(3|4|5|7|8)\d{9}$/.test(value))||!/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(value)){
-			  this.$vux.toast.show({
-				  text: "手机号格式不正确",
-				  type:"warn"
-			  })
-			  return
-		  }
-		  this.showModel=false
-		  this.tel=value
-	},
-   
+		that.$api.modifyUser(param).then(res=>{
+			that.$vux.loading.hide()
+				if(res.code==0){
+					that.$vux.alert.show({
+							title: '提示',
+							content:  res.message,
+						onShow () {
+							
+						},
+						onHide () {
+							wx.closeWindow()
+						}
+					})
+				}else{
+					that.$vux.toast.text(res.message)
+				}
+		})
+		
+	},  
   }
 }
 </script>
@@ -109,8 +125,17 @@ export default {
 		width:100%
 		
 	}
-	.submit-footer{
-		margin-top: 200px;
-		
+	.address{
+		height:50px;
+		border-top:1px solid #ccc;
 	}
+	.submit-footer{
+		position: fixed;
+		bottom: 50px;
+		width:100%;
+	}
+/* 	overflow: hidden;
+text-overflow:ellipsis;
+white-space: nowrap; */
+
 </style>

@@ -1,45 +1,30 @@
 <template>
 	<div class="device-detail">
+		 <x-header @on-click-back="goBack()" :left-options="{backText: '返回',preventGoBack:true}">{{deviceCode}}</x-header>
 		<div class="img1 note" :style ="note">
 			
 		</div>
-		<div >
-			<div class="deviceName">米桶一号</div>
-			   <card >
-				  <div slot="content" class="card-demo-flex card-demo-content01">
-					<div class="vux-1px-r">
-					  <span>1130</span>
-					  <br/>
-					   温度
-					</div>
-					<div class="vux-1px-r">
-					  <span>15</span>
-					  <br/>
-					  湿度
-					</div>
-					<div class="vux-1px-r">
-					  <span>0</span>
-					  <br/>
-					 状态
-					</div>
-					
-				  </div>
-				</card>
+		<div>
 			
-			<!-- <div class="detail">
-				<dl>
-					<dd>20</dd>
-					<dt>温度</dt>
-				</dl>
-				<dl>
-					<dd>40</dd>
-					<dt>湿度</dt>
-				</dl>
-				<dl>
-					<dd>开</dd>
-					<dt>状态</dt>
-				</dl>
-			</div> -->
+			
+		<div class="device-info">
+			<dl v-for="item in deviceStatusList">
+				
+				<dt v-if="item.stateName=='temperature' ">{{item.stateValue}}℃</dt>
+				<dt v-if="item.stateName=='humidity' ">{{item.stateValue}}%</dt>
+				<dt v-if="item.stateName=='quality' ">{{item.stateValue/1000}}KG</dt>
+				<dt v-if="item.stateName=='electric' ">{{item.stateValue/1000}}Ah</dt>
+				<dt v-if="item.stateName=='signal_intensity' ">{{item.stateValue}}dBm</dt>
+				<dd v-if="item.stateName=='temperature' ">温度</dd>
+				<dd v-else-if="item.stateName=='humidity' ">湿度</dd>
+				<dd v-else-if="item.stateName=='quality' ">重量</dd>
+				<dd v-else-if="item.stateName=='electric' ">电量</dd>
+				<dd v-else-if="item.stateName=='signal_intensity' ">信号强度</dd>
+			</dl>
+			
+			
+		</div>
+
 		</div>
 
 	</div>
@@ -47,18 +32,21 @@
 </template>
 
 <script>
-	import { Grid, GridItem,GroupTitle ,Divider, Card} from 'vux'
+	import {XHeader, Grid, GridItem,GroupTitle ,Divider, Card} from 'vux'
 
 	export default {
 		name:"device_detail",
 		components: {
 			 Grid,
 			GridItem,
+			XHeader,
 			GroupTitle,Divider, Card
 		},
 		data(){
 
 			return{
+				deviceCode:"",
+				deviceStatusList:[],
 				note: {
 				backgroundImage: "url(" + require("../../assets/userback.jpg") + ") ",
 				backgroundPosition: "center center",
@@ -69,6 +57,28 @@
 				},
 			}
 		},
+		mounted(){
+			this.deviceCode=this.$route.query.deviceCode;
+			this.getDetaildata()
+		},
+		methods:{
+				getDetaildata(){
+					var that=this;
+					var urls=that.$api.deviceInfo+"?deviceCode="+that.deviceCode
+					that.axios.post(urls).then(res=>{
+						if(res.data.code==0)
+						that.deviceStatusList=res.data.data.status;
+					
+					})
+				},
+			
+			
+			
+			//返回列表
+			goBack(){
+				this.$router.push("/device_list")
+			}
+		}
 		
 	}
 </script>
@@ -83,17 +93,40 @@
 	line-height: 50px;
 	font-size: 28px;
 }
-.detail{
+.device-info{
 	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	flex-direction: row;
 }
-.detail dl{
+
+.device-info dl{
 	width:30%;
 	text-align: center;
 }
-.detail dl dd{
-	color:red;
+.device-info dl dt{
+	/* background: red; */
 	text-align: center;
+	/* width:100%; */
+	height:60px;
+	width:60px;
+	border-radius:50%;
+	line-height: 60px;
+	text-align: center;
+	display: inline-block;
+	border:2px solid #4686e5;
+	color: #3bdee6;
 }
+.device-info dl dd{
+	width:100%;
+	/* background: #04BE02; */
+	text-align: center;
+	/* color: #909090; */
+	-webkit-margin-start:0;
+	line-height: 35px;
+	font-size:14px;
+}
+
 
 
 
