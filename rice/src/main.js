@@ -12,7 +12,8 @@ Vue.prototype.axios = axios;
 import api from './api/';
 Vue.prototype.$api = api;
 import { DatetimePlugin, LocalePlugin, DevicePlugin, ToastPlugin, AlertPlugin, ConfirmPlugin, LoadingPlugin, WechatPlugin, AjaxPlugin, AppPlugin } from 'vux'
-
+import VueScroller from 'vue-scroller'
+Vue.use(VueScroller)
 Vue.use(DevicePlugin)
 Vue.use(ToastPlugin)
 Vue.use(AlertPlugin)
