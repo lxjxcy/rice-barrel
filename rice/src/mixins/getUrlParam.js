@@ -20,6 +20,5 @@ export default{
 				return data // data = {from:aaa,id:111}
 			}
 		},
-
 	},
 }

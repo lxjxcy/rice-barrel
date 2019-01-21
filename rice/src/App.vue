@@ -12,6 +12,10 @@ export default {
 </script>
 
 <style>
+	*{
+		padding:0;
+		margin:0;
+	}
 	@font-face {
   font-family: 'iconfont';
   src: url('./font/iconfont.eot');
@@ -66,4 +70,26 @@ export default {
 	width:100% !important;
 	height:100% !important;
 }
+ul li{
+	list-style: none;
+}
+.l{
+	float: left;
+}
+.r{
+	float: right;
+}
+	.echartall{
+		border: 2px solid hsla(0,0%,90%,.5);
+		margin: 1px;
+		/* padding: 2%; */
+		box-sizing: border-box;
+		border-radius: 10px;
+	}
+	td{
+		color:#fff
+	}
+	table{
+		color:#fff
+	}
 </style>

@@ -7,6 +7,26 @@ import store from './store/index.js'
 import wx from 'weixin-js-sdk';
 import axios from "./axiosconfig/index.js"
 
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts ;
+
+import scroll from 'vue-seamless-scroll'
+Vue.use(scroll)
+import echartsLiquidfill from 'echarts-liquidfill';
+//highcharts的引入
+import highcharts from 'highcharts'
+
+import VueHighcharts from 'vue-highcharts';
+ 
+Vue.use(VueHighcharts)
+Vue.use(highcharts)
+
+import highcharts3d from 'highcharts/highcharts-3d'
+highcharts3d(highcharts)
+
+import Charts from './components/Charts.vue';
+Vue.component(Charts.name, Charts)
+
 axios.defaults.withCredentials = true;
 Vue.prototype.axios = axios;
 import api from './api/';

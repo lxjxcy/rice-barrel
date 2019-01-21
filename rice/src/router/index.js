@@ -6,6 +6,11 @@ import device_detail from '@/view/device/device_detail'
 import device_list from '@/view/device/device_list'
 import scanqrCode from '@/view/scanqrCode'
 import deviceBind from '@/view/deviceBind'
+
+import home from '@/view/home/home'
+import overall from '@/view/home/propertise/overall/overall'
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -18,6 +23,18 @@ export default new Router({
         title: '扫一扫'
      },
 			component: scanqrCode
+		},
+		{
+			path: '/home',
+			name: 'home',
+			component: home,
+			children:[
+				{
+					path:'/overall',
+					name:'overall',
+					component:overall
+				}
+			]
 		},
 		
 		{
