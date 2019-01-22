@@ -112,11 +112,11 @@
 										{
 												value: 0.5,//所占比例 0-1
 												itemStyle: {
-														color: 'rgb(233,240,254)',//水波的颜色
+														color: 'rgb(233,240,254,.8)',//水波的颜色
 												}
 										}],
 										itemStyle: { color: "#fff" },//波线的阴影
-										backgroundStyle :{color:'#fff'},//球状的背景颜色
+										backgroundStyle :{color:'#2e95df'},//球状的背景颜色
 										radius: '70%',//水波图的半径
 										outline: {
 												show: false //true显示水波图上的文字
@@ -128,7 +128,7 @@
 												},
 												position: ['50%', '30%'],
 												textStyle: {
-													color: '#000',
+													color: '#fff',
 													fontSize: 12,
 													
 													// backgroundColor:"#f0f",

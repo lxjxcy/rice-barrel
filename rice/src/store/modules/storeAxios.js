@@ -8,24 +8,20 @@ const house={
 			 four:[220, 152, 191, 244, 230, 344, 310,220, 45, 191, 78, 290, 99, 310],
 			 fif:[220, 333, 564, 244, 111, 341, 112,220, 45, 612, 45, 277, 87, 344],
 			 sat:[220, 333, 564, 300, 456, 111, 112,232,444, 612, 45, 277, 87, 344],
-			  num: 0,
-	      add: 0,
-				 count: 0,
-	    // 新增waiting  状态
-	    waiting: false,
-	    // 额外需要增加的数字
-	    anotherIncrement: 5,
-			roomList:[],		
+			num:10,
+			add:10,
+			
+	
 		 },
+		 // 在组件中通过import { mapGetters, mapState,mapMutations,mapActions} from 'vuex'引入vuex
 	mutations:{
-			 // 存渠道
+			//在组件方法中引入...mapMutations(["jia"]),可直接调用此方法jia(1){} 为num参数
 	    jia: function(state,num) {
 	      // 加1
 	      state.num=num+2;
 	    },
 	    INCREMENT: function(state) {
-				console.log("ssss")
-	      // state.count=1000;
+				console.log("a")
 				state.one=[20, 32, 1, 34, 90, 230, 210,120, 132, 101, 34, 90, 230, 210]
 				state.two=[220, 182, 191, 433, 67, 330, 310,220, 31, 111, 231, 256, 30, 345]
 				state.three=[220, 345, 191, 234, 111, 42, 45,220, 182, 67, 655, 732, 330, 233]
@@ -37,24 +33,11 @@ const house={
 	    DECREMENT: function(state) {
 	      state.count--;
 	    },
-	    INCREMENT_WITH_VALUE(state, value) {
-	      state.count = state.count + value.intValue + value.anotherValue;
-	    },
-	    // // 显示和隐藏waiting
-	    SHOW_WAITING_MESSAGE(state) {
-	      state.waiting = true; 
-	    },
-	    HIDE_WAITING_MESSAGE(state) {
-	      state.waiting = false;
-	    },
-			
-			 GET_ROOM_LIST(state, data) {
-				 console.log()
-	      // state.roomList = data
-	    },
-			
+	  	
 	},
 	  actions: {
+			// 通过...mapActions(["increment"]),
+			//调用后台数据
 // 		 async LOGIN({ commit }, value) {
 // 			return new Promise((resolve, reject) => {
 // 	        api.login(value).then(res => {
@@ -80,28 +63,6 @@ const house={
 	      commit("DECREMENT")
 	    },
 			
-			
-			
-			
-	    incrementWithValue({
-	      commit
-	    }, value) {
-	      commit("SHOW_WAITING_MESSAGE");
-	
-	      let intValue = parseInt(value.value)
-	      let anotherValue = value.anotherValue
-	      setTimeout(function() {
-	        if (isNaN(intValue)) {
-	          alert("Not an Interger")
-	        } else {
-	          commit("HIDE_WAITING_MESSAGE");
-	          commit("INCREMENT_WITH_VALUE", {
-	            intValue,
-	            anotherValue
-	          })
-	        }
-	      }, 2000)
-	    }
 	  },
 	getters: {
 	    getnum: (state) =>{
@@ -110,9 +71,6 @@ const house={
 	    getadd:(state)=> {
 	      return state.add += 200
 	    },
-	    countAnother:(state)=> {
-	      return state.anotherIncrement
-	    }
 	  },
 }
 

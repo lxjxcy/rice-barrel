@@ -1,6 +1,5 @@
 <template>
 	<div class="occupancy" >
-		<!-- <div class="occupancys"  :style="{width: '140px', height: '200px'}"></div> -->
 		<Charts :id="id"  :option="option" :height="height" :width="width"/>
 	</div>
 </template>
@@ -46,9 +45,10 @@
 						icon : 'circle',
 						borderColor :'#fff',
 						top:'23%',
+						// data:["2号楼","2号楼"],
 						textStyle:{
-						color:['#fff'],
-					    },
+								color:['#fff'],
+					   },
 						  formatter:'1号楼'
 					},
 					textStyle:{
@@ -102,9 +102,7 @@
 			 getChart(){
 				this.option.series[0].data[0].value=this.value
 				this.option.series[0].data[1].value=100-this.value
-
 				this.option.series[0].data[0].name=this.name
-			
 			}
 		},
 	}

@@ -190,6 +190,7 @@
 		},
 		methods: {
 			 getChart(){
+				 console.log("aaaa")
 				this.option.xAxis=this.xAxis;
 				this.option.series[0].data=this.one;
 				this.option.series[1].data=this.two

@@ -40,6 +40,7 @@ export default {
    };
   }
  },
+ //检测option数据改变时自动刷新图表
  watch:{
 	option: {
 	   handler(newVal, oldVal) {
@@ -65,21 +66,23 @@ export default {
 		 let mycarts=document.getElementById(id)
 		 that.chart=that.$echarts.init(mycarts)
 		 that.chart.setOption(option)
+		 
+		 //图标自适应
 		 window.addEventListener("resize",()=>{
 			 that.chart.resize()
 		 })
-		 
+		 //tootip循环切换
 		 if(id=="employees"){
 			 	var index = 0; //播放所在下标,使得tootip每隔三秒自动显示
 			 	var mTime = setInterval(()=> {
 			 		that.chart.dispatchAction({
-			 			type: 'showTip',
+			 			type: 'showTip',//提示
 			 			seriesIndex: 0,
 			 			dataIndex: index
 			 		});
 			 
 			 			that.chart.dispatchAction({
-			 					type: 'highlight',
+			 					type: 'highlight',//高亮
 			 					seriesIndex: 0,
 			 					dataIndex: index
 			 			});

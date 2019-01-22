@@ -103,8 +103,8 @@
 				this.ifselect=classindex;
 				if(classindex==2){
 					this.increment()
+					//循环切换数据
 					this.$refs.incomeChild.getChart(); 
-				
 				}
 			}
 		}
